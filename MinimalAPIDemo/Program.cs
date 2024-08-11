@@ -38,18 +38,18 @@ app.MapGet("/employees", () => employeesList);
 app.MapGet("/employees/{id}", (int id) =>
 {
     Employee? employee = employeesList.FirstOrDefault(emp => emp.Id == id);
-    return employee is not null? Results.Ok(employee): Results.NotFound();
+    return employee is not null ? Results.Ok(employee) : Results.NotFound();
 });
 
 // Endpoint to create a new employee
-app.MapPost("/employees",(Employee newEmployee) =>{
+app.MapPost("/employees", (Employee newEmployee) =>
+{
 
     // retrieve the employee ID
     newEmployee.Id = employeesList.Count > 0 ? employeesList.Max(emp => emp.Id + 1) : 1;
     employeesList.Add(newEmployee);
 
     return Results.Created($"/employees/{newEmployee.Id}", newEmployee);
-
 });
 
 app.MapPut("/employees/{id}", (int id, Employee newEmployee) =>
@@ -57,7 +57,7 @@ app.MapPut("/employees/{id}", (int id, Employee newEmployee) =>
     // Find the employee using ID to be updated
     Employee? employeeToBeUpdated = employeesList.FirstOrDefault(emp => emp.Id == id);
 
-    if(employeeToBeUpdated is null) return Results.NotFound();
+    if (employeeToBeUpdated is null) return Results.NotFound();
 
     employeeToBeUpdated.Name = newEmployee.Name;
     employeeToBeUpdated.Position = newEmployee.Position;
@@ -65,6 +65,20 @@ app.MapPut("/employees/{id}", (int id, Employee newEmployee) =>
 
     return Results.Ok(employeeToBeUpdated);
 
+});
+
+// Endpoint to delete the employe using ID
+app.MapDelete("/employeed/{id}", (int id) =>
+{
+    // retrieve the employee to be deleted using ID
+    var employeeToBeDeleted = employeesList.FirstOrDefault(emp => emp.Id == id);
+    if (employeeToBeDeleted is null) return Results.NotFound(); // If not found then return 404
+
+    // Remove the employee from the list
+    employeesList.Remove(employeeToBeDeleted);
+
+    // Return a 204 No Content Response
+    return Results.NoContent();
 });
 
 var summaries = new[]
