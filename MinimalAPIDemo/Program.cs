@@ -28,31 +28,58 @@ app.UseHttpsRedirection();
 
 // Endpoint to retrieve all the employees
 // Map a GET request to /employees to return employees list
-app.MapGet("/employees", (IEmployeeService employeeService) => 
-     employeeService.GetAllEmployees());
+app.MapGet("/employees", (IEmployeeService employeeService) =>
+{
+    try
+    {
+        return Results.Ok(employeeService.GetAllEmployees());
+    }
+    catch(Exception ex)
+    {
+        return Results.Problem(ex.Message);
+    }
+    
+});
+
 
 // Endpoint to retrieve single employee using the employee ID
 app.MapGet("/employees/{id}", (int id, IEmployeeService employeeService) =>
 {
-    // create a scenario to throw the exception
-    int x = 10, y = 0;
-    int result = x / y;
-    var employee = employeeService.GetEmployeeById(id);
-    return employee is not null ? Results.Ok(employee) : Results.NotFound();
+
+    try
+    {
+        // create a scenario to throw the exception
+        int x = 10, y = 0;
+        int result = x / y;
+
+        var employee = employeeService.GetEmployeeById(id);
+        return employee is not null ? Results.Ok(employee) : Results.NotFound();
+    }
+    catch (Exception ex) { 
+        return Results.Problem($"{ex.Message}");
+    }
+    
 });
 
 // Endpoint to create a new employee
 app.MapPost("/employees", (Employee newEmployee, IEmployeeService employeeService) =>
 {
-    
-
-    if (!ValidationHelper.TryValidate(newEmployee, out var validationResults))
+    try
     {
-        // Returns 400 Bad Request if validation fails.
-        return Results.BadRequest(validationResults);
+        if (!ValidationHelper.TryValidate(newEmployee, out var validationResults))
+        {
+            // Returns 400 Bad Request if validation fails.
+            return Results.BadRequest(validationResults);
+        }
+        var createdEmployee = employeeService.AddEmployee(newEmployee);
+        return Results.Created($"/employees/{createdEmployee.Id}", createdEmployee);
     }
-    var createdEmployee = employeeService.AddEmployee(newEmployee);
-    return Results.Created($"/employees/{createdEmployee.Id}", createdEmployee);
+    catch(Exception ex)
+    {
+        return Results.Problem(ex.Message);
+    }
+
+  
     // retrieve the employee ID
     //newEmployee.Id = employeesList.Count > 0 ? employeesList.Max(emp => emp.Id + 1) : 1;
     //employeesList.Add(newEmployee);
@@ -62,15 +89,22 @@ app.MapPost("/employees", (Employee newEmployee, IEmployeeService employeeServic
 
 app.MapPut("/employees/{id}", (int id, Employee newEmployee, IEmployeeService employeeService) =>
 {
-
-    if(!ValidationHelper.TryValidate(newEmployee,out var validationResults))
+    try
     {
-        // Returns 400 Bad Request if the validation fails
-        return Results.BadRequest(validationResults);
-    }
+        if (!ValidationHelper.TryValidate(newEmployee, out var validationResults))
+        {
+            // Returns 400 Bad Request if the validation fails
+            return Results.BadRequest(validationResults);
+        }
 
-    Employee? employee = employeeService.UpdateEmployee(id,newEmployee);
-    return employee is not null? Results.Ok(employee): Results.NotFound();
+        Employee? employee = employeeService.UpdateEmployee(id, newEmployee);
+        return employee is not null ? Results.Ok(employee) : Results.NotFound();
+    }
+    catch(Exception ex)
+    {
+        return Results.Problem($"{ex.Message}");
+    }
+    
 
     //// Find the employee using ID to be updated
     //Employee? employeeToBeUpdated = employeesList.FirstOrDefault(emp => emp.Id == id);
@@ -89,8 +123,17 @@ app.MapPut("/employees/{id}", (int id, Employee newEmployee, IEmployeeService em
 
 app.MapDelete("/employeed/{id}", (int id, IEmployeeService employeeService) =>
 {
-    var result = employeeService.DeleteEmployee(id);
-    return result ? Results.NoContent() : Results.NotFound();
+
+    try
+    {
+        var result = employeeService.DeleteEmployee(id);
+        return result ? Results.NoContent() : Results.NotFound();
+    }
+    catch (Exception ex) {
+        return Results.Problem($"{ex.Message}");
+    }
+
+    
     //// retrieve the employee to be deleted using ID
     //var employeeToBeDeleted = employeesList.FirstOrDefault(emp => emp.Id == id);
     //if (employeeToBeDeleted is null) return Results.NotFound(); // If not found then return 404
