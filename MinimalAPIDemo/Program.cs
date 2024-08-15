@@ -39,8 +39,14 @@ app.MapGet("/employees/{id}", (int id, IEmployeeService employeeService) =>
 // Endpoint to create a new employee
 app.MapPost("/employees", (Employee newEmployee, IEmployeeService employeeService) =>
 {
-    var createdEmployee = employeeService.AddEmployee(newEmployee);
+    
 
+    if (!ValidationHelper.TryValidate(newEmployee, out var validationResults))
+    {
+        // Returns 400 Bad Request if validation fails.
+        return Results.BadRequest(validationResults);
+    }
+    var createdEmployee = employeeService.AddEmployee(newEmployee);
     return Results.Created($"/employees/{createdEmployee.Id}", createdEmployee);
     // retrieve the employee ID
     //newEmployee.Id = employeesList.Count > 0 ? employeesList.Max(emp => emp.Id + 1) : 1;
@@ -51,6 +57,12 @@ app.MapPost("/employees", (Employee newEmployee, IEmployeeService employeeServic
 
 app.MapPut("/employees/{id}", (int id, Employee newEmployee, IEmployeeService employeeService) =>
 {
+
+    if(!ValidationHelper.TryValidate(newEmployee,out var validationResults))
+    {
+        // Returns 400 Bad Request if the validation fails
+        return Results.BadRequest(validationResults);
+    }
 
     Employee? employee = employeeService.UpdateEmployee(id,newEmployee);
     return employee is not null? Results.Ok(employee): Results.NotFound();
