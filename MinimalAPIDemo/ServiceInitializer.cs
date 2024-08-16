@@ -2,6 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using MinimalAPIDemo.Models;
+using MinimalAPIDemo.Models.Products;
 
 namespace MinimalAPIDemo
 {

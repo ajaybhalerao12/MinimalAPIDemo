@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MinimalAPIDemo.Models.Products;
 
 namespace MinimalAPIDemo.Models
 {

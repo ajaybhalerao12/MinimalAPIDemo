@@ -10,18 +10,28 @@ namespace MinimalAPIDemo.EndpointMappers
         public static WebApplication MapEmployeeEndpoints(this WebApplication app)
         {            
             // Map a GET request to /employees to return employees list
-            app.MapGet("/employees", GetAllEmployees()).WithTags("Employees");
-            // Endpoint to retrieve single employee using the employee ID
-            app.MapGet("/employees/{id}", GetEmployeeById()).WithTags("Employees");
+            app.MapGet("/employees", GetAllEmployees()).WithTags("Employees")
+                .AddEndpointFilter<LoggingFilter>()
+                .AddEndpointFilter<ExceptionHandlingFilter>();
 
+            // Endpoint to retrieve single employee using the employee ID
+            app.MapGet("/employees/{id}", GetEmployeeById()).WithTags("Employees")
+                .AddEndpointFilter<LoggingFilter>()
+                .AddEndpointFilter<ExceptionHandlingFilter>();
 
             // Endpoint to create a new employee
-            app.MapPost("/employees", CreateEmployee()).WithTags("Employees");
+            app.MapPost("/employees", CreateEmployee()).WithTags("Employees")
+                .AddEndpointFilter<LoggingFilter>()
+                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
 
-            app.MapPut("/employees/{id}", UpdateEmployee()).WithTags("Employees");
+            app.MapPut("/employees/{id}", UpdateEmployee()).WithTags("Employees")
+                .AddEndpointFilter<LoggingFilter>()
+                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
 
             // Endpoint to delete the employe using ID
-            app.MapDelete("/employeed/{id}", DeleteEmployee()).WithTags("Employees");
+            app.MapDelete("/employeed/{id}", DeleteEmployee()).WithTags("Employees")
+                .AddEndpointFilter<LoggingFilter>()
+                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
 
             return app;
         }
@@ -51,8 +61,8 @@ namespace MinimalAPIDemo.EndpointMappers
                 {
                     logger.LogInformation($"Retrieve the employe by employee id:{id}");
                     // create a scenario to throw the exception
-                    //int x = 10, y = 0;
-                    //int result = x / y;
+                    int x = 10, y = 0;
+                    int result = x / y;
 
                     var employee = employeeService.GetEmployeeById(id);
                     if (employee == null)

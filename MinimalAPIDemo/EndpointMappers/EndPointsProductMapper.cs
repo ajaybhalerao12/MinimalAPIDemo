@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MinimalAPIDemo.Models;
+using MinimalAPIDemo.Models.Products;
 
 namespace MinimalAPIDemo.EndpointMappers
 {
@@ -10,19 +11,29 @@ namespace MinimalAPIDemo.EndpointMappers
         {
 
             // Create a MAP Get to retrieve all products
-            app.MapGet("/products", GetAllProducts()).WithTags("Products");
+            app.MapGet("/products", GetAllProducts()).WithTags("Products")
+                .AddEndpointFilter<LoggingFilter>()
+                .AddEndpointFilter<ExceptionHandlingFilter>();
 
             // Create a GET request to retrieve a product using ID
-            app.MapGet("/products/{id}", GetProductById()).WithTags("Products"); ;
+            app.MapGet("/products/{id}", GetProductById()).WithTags("Products")
+                .AddEndpointFilter<LoggingFilter>()
+                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
 
             // Create a POST requet to create a new PRODUCT
-            app.MapPost("/products", CreateProduct()).WithTags("Products"); ;
+            app.MapPost("/products", CreateProduct()).WithTags("Products")
+                .AddEndpointFilter<LoggingFilter>()
+                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
 
             // Crete a PUT request to update the product
-            app.MapPut("/products/{id}", UpdateProduct()).WithTags("Products"); ;
+            app.MapPut("/products/{id}", UpdateProduct()).WithTags("Products")
+                .AddEndpointFilter<LoggingFilter>()
+                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
 
             // Create a Delete Request to remove the prouduct
-            app.MapDelete("/products/{id}", DeleteProductById()).WithTags("Products"); ;
+            app.MapDelete("/products/{id}", DeleteProductById()).WithTags("Products")
+                .AddEndpointFilter<LoggingFilter>()
+                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
 
             return app;
         }

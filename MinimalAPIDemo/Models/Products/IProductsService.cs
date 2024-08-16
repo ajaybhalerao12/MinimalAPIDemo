@@ -1,4 +1,4 @@
-﻿namespace MinimalAPIDemo.Models
+﻿namespace MinimalAPIDemo.Models.Products
 {
     public interface IProductsService
     {
