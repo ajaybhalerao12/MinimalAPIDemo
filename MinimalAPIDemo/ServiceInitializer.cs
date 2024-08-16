@@ -26,7 +26,7 @@ namespace MinimalAPIDemo
         {
             // Register EmployeeService in DI container
             services.AddSingleton<IEmployeeService, EmployeeService>();
-            services.AddScoped<IEmployeeServiceAsync, EmployeeServiceAsync>();
+            services.AddSingleton<IEmployeeServiceAsync, EmployeeServiceAsync>();
 
             // Register the Products service in DI container
             services.AddScoped<IProductsService, ProductService>();
