@@ -9,31 +9,38 @@ namespace MinimalAPIDemo.EndpointMappers
 
         // Endpoint to retrieve all the employees
         public static WebApplication MapEmployeeEndpoints(this WebApplication app)
-        {            
+        {
             // Map a GET request to /employees to return employees list
             app.MapGet("/employees", GetAllEmployees()).WithTags("Employees")
                 .AddEndpointFilter<LoggingFilter>()
                 .AddEndpointFilter<ExceptionHandlingFilter>()
                 .AddEndpointFilter<AuthorizationFilter>();
 
+
             // Endpoint to retrieve single employee using the employee ID
             app.MapGet("/employees/{id}", GetEmployeeById()).WithTags("Employees")
                 .AddEndpointFilter<LoggingFilter>()
-                .AddEndpointFilter<ExceptionHandlingFilter>();
+                .AddEndpointFilter<ExceptionHandlingFilter>()
+                .AddEndpointFilter<AuthorizationFilter>();
+
+
 
             // Endpoint to create a new employee
             app.MapPost("/employees", CreateEmployee()).WithTags("Employees")
                 .AddEndpointFilter<LoggingFilter>()
-                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
+                .AddEndpointFilter<ExceptionHandlingFilter>()
+                .AddEndpointFilter<AuthorizationFilter>();
 
             app.MapPut("/employees/{id}", UpdateEmployee()).WithTags("Employees")
                 .AddEndpointFilter<LoggingFilter>()
-                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
+                .AddEndpointFilter<ExceptionHandlingFilter>()
+                .AddEndpointFilter<AuthorizationFilter>();
 
             // Endpoint to delete the employe using ID
             app.MapDelete("/employeed/{id}", DeleteEmployee()).WithTags("Employees")
                 .AddEndpointFilter<LoggingFilter>()
-                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
+                .AddEndpointFilter<ExceptionHandlingFilter>()
+                .AddEndpointFilter<AuthorizationFilter>();
 
             return app;
         }
@@ -63,8 +70,8 @@ namespace MinimalAPIDemo.EndpointMappers
                 {
                     logger.LogInformation($"Retrieve the employe by employee id:{id}");
                     // create a scenario to throw the exception
-                    int x = 10, y = 0;
-                    int result = x / y;
+                    //int x = 10, y = 0;
+                    //int result = x / y;
 
                     var employee = employeeService.GetEmployeeById(id);
                     if (employee == null)

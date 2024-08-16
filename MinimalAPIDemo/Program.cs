@@ -15,5 +15,4 @@ app.ConfigureMiddleware();
 
 app.RegisterEndpoints();
 
-
 app.Run();

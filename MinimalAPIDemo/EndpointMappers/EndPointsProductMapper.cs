@@ -14,27 +14,32 @@ namespace MinimalAPIDemo.EndpointMappers
             // Create a MAP Get to retrieve all products
             app.MapGet("/products", GetAllProducts()).WithTags("Products")
                 .AddEndpointFilter<LoggingFilter>()
-                .AddEndpointFilter<ExceptionHandlingFilter>();
+                .AddEndpointFilter<ExceptionHandlingFilter>()
+                .AddEndpointFilter<AuthorizationFilter>();
 
             // Create a GET request to retrieve a product using ID
             app.MapGet("/products/{id}", GetProductById()).WithTags("Products")
                 .AddEndpointFilter<LoggingFilter>()
-                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
+                .AddEndpointFilter<ExceptionHandlingFilter>()
+                .AddEndpointFilter<AuthorizationFilter>();
 
             // Create a POST requet to create a new PRODUCT
             app.MapPost("/products", CreateProduct()).WithTags("Products")
                 .AddEndpointFilter<LoggingFilter>()
-                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
+                .AddEndpointFilter<ExceptionHandlingFilter>()
+                .AddEndpointFilter<AuthorizationFilter>();
 
             // Crete a PUT request to update the product
             app.MapPut("/products/{id}", UpdateProduct()).WithTags("Products")
                 .AddEndpointFilter<LoggingFilter>()
-                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
+                .AddEndpointFilter<ExceptionHandlingFilter>()
+                .AddEndpointFilter<AuthorizationFilter>();
 
             // Create a Delete Request to remove the prouduct
             app.MapDelete("/products/{id}", DeleteProductById()).WithTags("Products")
                 .AddEndpointFilter<LoggingFilter>()
-                .AddEndpointFilter<ExceptionHandlingFilter>(); ;
+                .AddEndpointFilter<ExceptionHandlingFilter>()
+                .AddEndpointFilter<AuthorizationFilter>();
 
             return app;
         }

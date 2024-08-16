@@ -12,31 +12,33 @@ namespace MinimalAPIDemo
     public static partial class ServiceInitializer
     {
         public static IServiceCollection RegisterApplicationServices(this IServiceCollection services,IConfiguration configuration)
-        {            
+        {
             RegisterSwaggerServices(services);
-            RegisterCustomServices(services);
-            
-            services.AddSingleton<AuthService>();
-            // Add JWT token Authentication services
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = configuration["Jwt:Issuer"],
-                        ValidAudience = configuration["Jwt:Audience"],
-                        IssuerSigningKey = new
-                        SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
-                    };
-                });
-            services.AddAuthorization();
-                
-            RegisterDBContext(services,configuration);
+            RegisterCustomServices(services);            
+            RegisterAuthenticationAuthorizationServices(services, configuration);
+
+            RegisterDBContext(services, configuration);
             return services;
+        }
+        
+        private static void RegisterAuthenticationAuthorizationServices(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                            .AddJwtBearer(options =>
+                            {
+                                options.TokenValidationParameters = new TokenValidationParameters()
+                                {
+                                    ValidateIssuer = true,
+                                    ValidateAudience = true,
+                                    ValidateLifetime = true,
+                                    ValidateIssuerSigningKey = true,
+                                    ValidIssuer = configuration["Jwt:Issuer"],
+                                    ValidAudience = configuration["Jwt:Audience"],
+                                    IssuerSigningKey = new
+                                    SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                                };
+                            });
+            services.AddAuthorization();
         }
 
         private static void RegisterDBContext(IServiceCollection services, IConfiguration configuration)
@@ -48,6 +50,9 @@ namespace MinimalAPIDemo
 
         private static void RegisterCustomServices(IServiceCollection services)
         {
+            // Add JWT token Authentication services
+            services.AddSingleton<AuthService>();
+
             // Register EmployeeService in DI container
             services.AddSingleton<IEmployeeService, EmployeeService>();
             services.AddSingleton<IEmployeeServiceAsync, EmployeeServiceAsync>();

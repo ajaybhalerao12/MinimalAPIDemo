@@ -5,7 +5,6 @@ namespace MinimalAPIDemo.EndpointMappers
 {
     public static class EndPointEmployeeV2Mapper
     {
-
         public static WebApplication MapEmployeeEndpoints2(this WebApplication app)
         {
             // Map a GET endpoint to retrieve all endpoints asynchronously

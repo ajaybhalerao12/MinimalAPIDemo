@@ -6,7 +6,7 @@ namespace MinimalAPIDemo
     {
         public static WebApplication RegisterEndpoints(this WebApplication app)
         {
-app.MapAuthenticationEndpoints();
+            app.MapAuthenticationEndpoints();
             app.MapEmployeeEndpoints();
             app.MapEmployeeEndpoints2();
             app.MapProductEndpoints();
