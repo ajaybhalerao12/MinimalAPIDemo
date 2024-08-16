@@ -10,19 +10,19 @@ namespace MinimalAPIDemo.EndpointMappers
         {
 
             // Create a MAP Get to retrieve all products
-            app.MapGet("/products", GetAllProducts());
+            app.MapGet("/products", GetAllProducts()).WithTags("Products");
 
             // Create a GET request to retrieve a product using ID
-            app.MapGet("/products/{id}", GetProductById());
+            app.MapGet("/products/{id}", GetProductById()).WithTags("Products"); ;
 
             // Create a POST requet to create a new PRODUCT
-            app.MapPost("/products", CreateProduct());
+            app.MapPost("/products", CreateProduct()).WithTags("Products"); ;
 
             // Crete a PUT request to update the product
-            app.MapPut("/products/{id}", UpdateProduct());
+            app.MapPut("/products/{id}", UpdateProduct()).WithTags("Products"); ;
 
             // Create a Delete Request to remove the prouduct
-            app.MapDelete("/products/{id}", DeleteProductById());
+            app.MapDelete("/products/{id}", DeleteProductById()).WithTags("Products"); ;
 
             return app;
         }

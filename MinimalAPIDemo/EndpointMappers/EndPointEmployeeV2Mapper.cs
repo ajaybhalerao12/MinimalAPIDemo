@@ -9,20 +9,20 @@ namespace MinimalAPIDemo.EndpointMappers
         public static WebApplication MapEmployeeEndpoints2(this WebApplication app)
         {
             // Map a GET endpoint to retrieve all endpoints asynchronously
-            app.MapGet("/v2/employees", GetAllEmployeesAsync());
+            app.MapGet("/v2/employees", GetAllEmployeesAsync()).WithTags("EmployeesV2");
 
             // Map a Get endpoint to retrive employee with specific ID asynchornously
-            app.MapGet("/v2/employees/{id}", GetEmployeeByIDAsync());
+            app.MapGet("/v2/employees/{id}", GetEmployeeByIDAsync()).WithTags("EmployeesV2"); ;
 
             // Create a POST request to create an employee asynchronously
-            app.MapPost("v2/employees", CreateEmployeeAsync());
+            app.MapPost("v2/employees", CreateEmployeeAsync()).WithTags("EmployeesV2"); ;
 
 
             // Create a PUT request to update the employee asynchronously
-            app.MapPut("/v2/employees/{id}", UpdateEmployeeAsync());
+            app.MapPut("/v2/employees/{id}", UpdateEmployeeAsync()).WithTags("EmployeesV2"); ;
 
             // Create a DELETE request to delete employee asynchronously
-            app.MapDelete("/v2/employees/{id}", DeleteEmployeeAsync());
+            app.MapDelete("/v2/employees/{id}", DeleteEmployeeAsync()).WithTags("EmployeesV2"); ;
 
 
             return app;

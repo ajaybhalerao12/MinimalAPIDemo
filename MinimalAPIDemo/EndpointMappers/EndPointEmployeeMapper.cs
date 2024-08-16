@@ -8,20 +8,20 @@ namespace MinimalAPIDemo.EndpointMappers
 
         // Endpoint to retrieve all the employees
         public static WebApplication MapEmployeeEndpoints(this WebApplication app)
-        {
+        {            
             // Map a GET request to /employees to return employees list
-            app.MapGet("/employees", GetAllEmployees());
+            app.MapGet("/employees", GetAllEmployees()).WithTags("Employees");
             // Endpoint to retrieve single employee using the employee ID
-            app.MapGet("/employees/{id}", GetEmployeeById());
+            app.MapGet("/employees/{id}", GetEmployeeById()).WithTags("Employees");
 
 
             // Endpoint to create a new employee
-            app.MapPost("/employees", CreateEmployee());
+            app.MapPost("/employees", CreateEmployee()).WithTags("Employees");
 
-            app.MapPut("/employees/{id}", UpdateEmployee());
+            app.MapPut("/employees/{id}", UpdateEmployee()).WithTags("Employees");
 
             // Endpoint to delete the employe using ID
-            app.MapDelete("/employeed/{id}", DeleteEmployee());
+            app.MapDelete("/employeed/{id}", DeleteEmployee()).WithTags("Employees");
 
             return app;
         }
