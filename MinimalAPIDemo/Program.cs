@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MinimalAPIDemo;
 using MinimalAPIDemo.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,37 +11,11 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
-// Add services to the container.
-// Add API explorer for endpoint documentation
-builder.Services.AddEndpointsApiExplorer();
-// Add Swagger for API documentation
-builder.Services.AddSwaggerGen();
-
-// Register EmployeeService in DI container
-builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<IEmployeeServiceAsync, EmployeeServiceAsync>();
-
-// Register the Products service in DI container
-builder.Services.AddScoped<IProductsService, ProductService>();
-
-builder.Services.AddDbContextPool<ApplicationDBContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DBConn"),
-        new MySqlServerVersion(new Version(8, 4, 0))));
+builder.Services.RegisterApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseMiddleware<ErrorHandlerMiddleware>();
-
-// Configure the HTTP request pipeline for the development pipeline.
-if (app.Environment.IsDevelopment())
-{
-    // Use Swagger middleware for swagger documentation
-    app.UseSwagger();
-    // Use Swagger UI middleware to interact with Swagger documentation
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
+app.ConfigureMiddleware();
 
 // Endpoint to retrieve all the employees
 // Map a GET request to /employees to return employees list
