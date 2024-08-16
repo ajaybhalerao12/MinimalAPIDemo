@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using MinimalAPIDemo.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +18,14 @@ builder.Services.AddSwaggerGen();
 
 // Register EmployeeService in DI container
 builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
-builder.Services.AddSingleton<IEmployeeServiceAsync, EmployeeServiceAsync>();
+builder.Services.AddScoped<IEmployeeServiceAsync, EmployeeServiceAsync>();
+
+// Register the Products service in DI container
+builder.Services.AddScoped<IProductsService, ProductService>();
+
+builder.Services.AddDbContextPool<ApplicationDBContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DBConn"),
+        new MySqlServerVersion(new Version(8, 4, 0))));
 
 var app = builder.Build();
 
@@ -280,5 +289,7 @@ app.MapDelete("v2/employees/{id}", async (int id, IEmployeeServiceAsync employee
         return Results.Problem(ex.Message);
     }
 });
+
+//CRUD operation for PRODUCTS service
 
 app.Run();
