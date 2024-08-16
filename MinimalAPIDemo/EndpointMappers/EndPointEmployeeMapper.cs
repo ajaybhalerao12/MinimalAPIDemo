@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MinimalAPIDemo.Models;
+using MinimalAPIDemo.Models.Filters;
 
 namespace MinimalAPIDemo.EndpointMappers
 {
@@ -12,7 +13,8 @@ namespace MinimalAPIDemo.EndpointMappers
             // Map a GET request to /employees to return employees list
             app.MapGet("/employees", GetAllEmployees()).WithTags("Employees")
                 .AddEndpointFilter<LoggingFilter>()
-                .AddEndpointFilter<ExceptionHandlingFilter>();
+                .AddEndpointFilter<ExceptionHandlingFilter>()
+                .AddEndpointFilter<AuthorizationFilter>();
 
             // Endpoint to retrieve single employee using the employee ID
             app.MapGet("/employees/{id}", GetEmployeeById()).WithTags("Employees")

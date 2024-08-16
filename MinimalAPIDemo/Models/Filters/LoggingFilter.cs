@@ -1,5 +1,4 @@
-﻿
-namespace MinimalAPIDemo.Models
+﻿namespace MinimalAPIDemo.Models.Filters
 {
     public class LoggingFilter : IEndpointFilter
     {
@@ -14,12 +13,12 @@ namespace MinimalAPIDemo.Models
         {
             _logger.LogInformation("Handling request: {RequestPath}",
                 context.HttpContext.Request.Path);
-     
+
             var result = await next(context);
 
             _logger.LogInformation($"Finished handling request: " +
                 $"{context.HttpContext.Request.Path}");
             return result;
-        }         
+        }
     }
 }

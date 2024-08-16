@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MinimalAPIDemo.Models;
+using MinimalAPIDemo.Models.Filters;
 using MinimalAPIDemo.Models.Products;
 
 namespace MinimalAPIDemo.EndpointMappers

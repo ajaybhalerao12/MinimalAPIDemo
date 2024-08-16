@@ -1,5 +1,4 @@
-﻿
-namespace MinimalAPIDemo.Models
+﻿namespace MinimalAPIDemo.Models.Filters
 {
     public class ExceptionHandlingFilter : IEndpointFilter
     {
@@ -16,12 +15,13 @@ namespace MinimalAPIDemo.Models
             {
                 return await next(context);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 _logger.LogError(ex, "An unhandled exception has occured");
                 return Results.Problem("An unexpected error has occured." +
                     " Please try again later");
             }
-            
+
         }
     }
 }
